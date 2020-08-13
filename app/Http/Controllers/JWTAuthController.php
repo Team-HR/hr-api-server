@@ -27,21 +27,40 @@ class JWTAuthController extends Controller
      */
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|between:2,100',
-            'email' => 'required|email|unique:users|max:50',
-            'password' => 'required|confirmed|string|min:6',
+        // $validator = Validator::make($request->all(), [
+        //     'name' => 'required|between:2,100',
+        //     'username' => 'required|unique:users|max:50',
+        //     'password' => 'required|confirmed|string|min:6',
+        // ]);
+
+        // $user = User::create(array_merge(
+        //     $validator->validated(),
+        //     ['password' => bcrypt($request->password)]
+        // ));
+
+        // return response()->json([
+        //     'message' => 'Successfully registered',
+        //     'user' => $user
+        // ], 201);
+        $v = Validator::make($request->all(), [
+            'name' => 'required|min:6',
+            'username' => 'required|unique:users',
+            'password'  => 'required|min:8|confirmed',
         ]);
 
-        $user = User::create(array_merge(
-            $validator->validated(),
-            ['password' => bcrypt($request->password)]
-        ));
+        if ($v->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $v->errors()
+            ], 422);
+        }
 
-        return response()->json([
-            'message' => 'Successfully registered',
-            'user' => $user
-        ], 201);
+        $user = new User();
+        $user->name = $request->name;
+        $user->username = $request->username;
+        $user->password = bcrypt($request->password);
+        $user->save();
+        return response()->json(['status' => 'success'], 200);
     }
 
     /**
@@ -66,7 +85,7 @@ class JWTAuthController extends Controller
 
         // return $this->createNewToken($token);
 
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('username', 'password');
         if ($token = $this->guard()->attempt($credentials)) {
             return response()->json(['status' => 'success'], 200)->header('Authorization', $token);
         }

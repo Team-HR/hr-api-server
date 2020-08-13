@@ -13,7 +13,7 @@ class Authenticate extends Middleware
      * @param  \Illuminate\Http\Request  $request
      * @return string|null
      */
-    
+
     // Override handle method
     public function handle($request, Closure $next, ...$guards)
     {
