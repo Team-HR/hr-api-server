@@ -20,14 +20,22 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::group([
-    'middleware' => 'api',
-    'prefix' => 'auth'
+	'middleware' => 'api',
+	'prefix' => 'auth'
 ], function ($router) {
-    Route::post('register', 'JWTAuthController@register');
-    Route::post('login', 'JWTAuthController@login');
-    Route::post('logout', 'JWTAuthController@logout');
-    Route::get('refresh', 'JWTAuthController@refresh');
-    Route::get('user', 'JWTAuthController@profile');
+	Route::post('register', 'JWTAuthController@register');
+	Route::post('login', 'JWTAuthController@login');
+	Route::post('logout', 'JWTAuthController@logout');
+	Route::get('refresh', 'JWTAuthController@refresh');
+	Route::get('user', 'JWTAuthController@profile');
+});
+
+
+Route::group([
+	'middleware' => 'api',
+	'prefix' => 'appointments',
+], function ($router) {
+	Route::get('index', 'AppointmentController@index');
 });
 
 
