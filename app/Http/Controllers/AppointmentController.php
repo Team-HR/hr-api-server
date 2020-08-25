@@ -23,8 +23,8 @@ class AppointmentController extends Controller
     public function index()
     {
         $apts = DB::select('select * from appointments');
-        
-        return response()->json(["status" => "success", "data" => $apts]);
+
+        return response()->json(["status" => "success", "data" => $apts], 200);
     }
 
     /**

@@ -100,7 +100,7 @@ class JWTAuthController extends Controller
     public function profile()
     {
         // return response()->json("profile!");
-        return response()->json(["status" => "success", "data" => auth()->user()]);
+        return response()->json(["status" => "success", "data" => auth()->user()], 200);
     }
 
     /**
@@ -112,7 +112,7 @@ class JWTAuthController extends Controller
     {
         auth()->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'Successfully logged out'], 200);
     }
 
     /**
@@ -125,8 +125,8 @@ class JWTAuthController extends Controller
         // return $this->createNewToken(auth()->refresh());
         if ($token = $this->guard()->refresh()) {
             return response()
-            ->json(['status' => 'successs'], 200)
-            ->header('Authorization', $token);
+                ->json(['status' => 'successs'], 200)
+                ->header('Authorization', $token);
         }
         return response()->json(['error' => 'refresh_token_error'], 401);
     }
@@ -138,14 +138,15 @@ class JWTAuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function createNewToken($token)
-    {
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
-        ]);
-    }
+    // protected function createNewToken($token)
+    // {
+    //     return response()->json([
+    //         'access_token' => $token,
+    //         'token_type' => 'bearer',
+    //         'expires_in' => auth()->factory()->getTTL() * 60
+    //     ]);
+    // }
+
 
     /**
      * Return auth guard
