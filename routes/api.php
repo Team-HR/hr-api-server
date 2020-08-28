@@ -36,6 +36,8 @@ Route::group([
 	'prefix' => 'appointments',
 ], function ($router) {
 	Route::get('index', 'AppointmentController@index');
+	Route::get('control_search/{id}', 'AppointmentController@control_search');
+	Route::post('store', 'AppointmentController@store');
 });
 
 

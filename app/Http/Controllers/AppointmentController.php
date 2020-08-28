@@ -11,19 +11,28 @@ use Validator;
 
 class AppointmentController extends Controller
 {
-    public function __construct()
-    {
-        // $this->middleware('auth:api', ['except' => ['login', 'register']]);
-    }
+    // public function __construct()
+    // {
+    // $this->middleware('auth:api', ['except' => ['login', 'register']]);
+    // }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function control_search($id)
+    {
+        $appointment = DB::table('appointments')->find($id);
+        // $appointment = Appointment::firstOrNew(
+        // );
+        return response()->json(["status" => "success", "data" => $appointment], 200);
+    }
+
     public function index()
     {
+        // $apts = DB::table('appointments')->find(1111);
         $apts = DB::select('select * from appointments');
-
         return response()->json(["status" => "success", "data" => $apts], 200);
     }
 
@@ -45,7 +54,18 @@ class AppointmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $appointment = Appointment::updateOrCreate(
+            ['id' => $request->input('id')],
+            [
+                'date_received' => $request->input('date_received'),
+                'name' => $request->input('name'),
+                'position' => $request->input('position'),
+                'date_of_effectivity' => $request->input('date_of_effectivity'),
+                'needs_revision' => $request->input('needs_revision'),
+                'remarks' => $request->input('remarks')
+            ]
+        );
+        return response()->json(["status" => "success"], 201);
     }
 
     /**
