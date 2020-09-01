@@ -13,6 +13,8 @@ class Appointment extends Model
 		'position',
 		'date_of_effectivity',
 		'needs_revision',
-		'remarks'
+		'remarks',
+		'is_complete',
+		'date_completed'
 	];
 }

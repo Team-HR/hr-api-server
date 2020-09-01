@@ -37,6 +37,7 @@ Route::group([
 ], function ($router) {
 	Route::get('index', 'AppointmentController@index');
 	Route::get('control_search/{id}', 'AppointmentController@control_search');
+	Route::post('complete', 'AppointmentController@complete');
 	Route::post('store', 'AppointmentController@store');
 });
 
