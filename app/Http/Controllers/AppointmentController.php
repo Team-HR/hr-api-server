@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Appointment as AppointmentResource;
 use App\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,16 +35,25 @@ class AppointmentController extends Controller
     {
         $appointment = Appointment::find($request->input('id'));
         $appointment->is_complete = 1;
-        $appointment->date_completed = now();
+        $date_received = $appointment->date_received;
+        $date_completed = now();
+        $appointment->date_completed = $date_completed;
+        $starttimestamp = strtotime($date_received);
+        $endtimestamp = strtotime($date_completed);
+        $difference = abs($endtimestamp - $starttimestamp); // / 3600;
+        $appointment->turn_around_time = $difference;
         $appointment->save();
         return response()->json(["status" => "success"], 201);
     }
+    // function differenceInHours($startdate,$enddate){
+
+    // }
 
     public function index()
     {
-        // $apts = DB::table('appointments')->find(1111);
-        $apts = DB::select('select * from appointments');
-        return response()->json(["status" => "success", "data" => $apts], 200);
+        $appointments = AppointmentResource::collection(Appointment::orderBy('created_at', 'desc')->get()); //->keyBy->id);
+        // $appointments = $appointments->sortByDesc('created_at');
+        return response()->json(["status" => "success", "data" => $appointments], 200);
     }
 
     /**

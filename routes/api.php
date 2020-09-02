@@ -30,7 +30,6 @@ Route::group([
 	Route::get('user', 'JWTAuthController@profile');
 });
 
-
 Route::group([
 	'middleware' => 'api',
 	'prefix' => 'appointments',

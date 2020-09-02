@@ -15,6 +15,7 @@ class Appointment extends Model
 		'needs_revision',
 		'remarks',
 		'is_complete',
-		'date_completed'
+		'date_completed',
+		'turn_around_time'
 	];
 }
