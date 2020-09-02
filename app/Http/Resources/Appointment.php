@@ -24,7 +24,7 @@ class Appointment extends JsonResource
         // return parent::toArray($request);
         if ($this->turn_around_time) {
             $t = $this->turn_around_time;
-            $turn_around_time = sprintf("%02d %s %02d %s %02d %s", floor($t / 3600), "Hrs", ($t / 60) % 60, "Min", $t % 60, "Sec");
+            $turn_around_time = sprintf("%02d%s%02d%s%02d%s", floor($t / 3600), "h:", ($t / 60) % 60, "m:", $t % 60, "s");
         } else {
             $turn_around_time = null;
         }
