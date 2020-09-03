@@ -23,12 +23,21 @@ class AppointmentController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function control_search($id)
+    public function control_search(Request $request)
     {
-        $appointment = DB::table('appointments')->find($id);
-        // $appointment = Appointment::firstOrNew(
-        // );
-        return response()->json(["status" => "success", "data" => $appointment], 200);
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'id' => 'required|numeric',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(["status" => "error", "errors" => $validator->errors()]);
+        } else {
+            $appointment = DB::table('appointments')->find($request->input('id'));
+            return response()->json(["status" => "success", "data" => $appointment], 200);
+        }
     }
 
     public function complete(Request $request)
@@ -45,14 +54,10 @@ class AppointmentController extends Controller
         $appointment->save();
         return response()->json(["status" => "success"], 201);
     }
-    // function differenceInHours($startdate,$enddate){
-
-    // }
 
     public function index()
     {
-        $appointments = AppointmentResource::collection(Appointment::orderBy('created_at', 'desc')->get()); //->keyBy->id);
-        // $appointments = $appointments->sortByDesc('created_at');
+        $appointments = AppointmentResource::collection(Appointment::orderBy('created_at', 'desc')->get());
         return response()->json(["status" => "success", "data" => $appointments], 200);
     }
 
@@ -74,20 +79,33 @@ class AppointmentController extends Controller
      */
     public function store(Request $request)
     {
-        $appointment = Appointment::updateOrCreate(
-            ['id' => $request->input('id')],
+        $validator = Validator::make(
+            $request->all(),
             [
-                'date_received' => $request->input('date_received') ? $request->input('date_received') : now(),
-                'name' => $request->input('name'),
-                'position' => $request->input('position'),
-                'date_of_effectivity' => $request->input('date_of_effectivity'),
-                'needs_revision' => $request->input('needs_revision'),
-                'remarks' => $request->input('remarks'),
-                'is_complete' => $request->input('is_complete') ? $request->input('is_complete') : 0,
-                'date_completed' => $request->input('date_completed')
+                'name' => 'required|max:255',
+                'position' => 'required|max:255',
+                'date_of_effectivity' => 'required',
             ]
         );
-        return response()->json(["status" => "success"], 201);
+
+        if ($validator->fails()) {
+            return response()->json(["status" => "error", "errors" => $validator->errors()]);
+        } else {
+            $appointment = Appointment::updateOrCreate(
+                ['id' => $request->input('id')],
+                [
+                    'date_received' => $request->input('date_received') ? $request->input('date_received') : now(),
+                    'name' => $request->input('name'),
+                    'position' => $request->input('position'),
+                    'date_of_effectivity' => $request->input('date_of_effectivity'),
+                    'needs_revision' => $request->input('needs_revision'),
+                    'remarks' => $request->input('remarks'),
+                    'is_complete' => $request->input('is_complete') ? $request->input('is_complete') : 0,
+                    'date_completed' => $request->input('date_completed')
+                ]
+            );
+            return response()->json(["status" => "success", "data" => $appointment]);
+        }
     }
 
     /**
