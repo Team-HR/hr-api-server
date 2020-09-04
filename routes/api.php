@@ -28,6 +28,8 @@ Route::group([
 	Route::post('logout', 'JWTAuthController@logout');
 	Route::get('refresh', 'JWTAuthController@refresh');
 	Route::get('user', 'JWTAuthController@profile');
+	Route::get('users', 'JWTAuthController@users');
+	Route::get('get_user/{id}', 'JWTAuthController@get_user');
 });
 
 Route::group([

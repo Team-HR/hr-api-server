@@ -45,6 +45,7 @@ class JWTAuthController extends Controller
         $v = Validator::make($request->all(), [
             'name' => 'required|min:6',
             'username' => 'required|unique:users',
+            // 'roles' => 'required',
             'password'  => 'required|min:8|confirmed',
         ]);
 
@@ -58,6 +59,7 @@ class JWTAuthController extends Controller
         $user = new User();
         $user->name = $request->name;
         $user->username = $request->username;
+        $user->roles = json_encode($request->roles);
         $user->password = bcrypt($request->password);
         $user->save();
         return response()->json(['status' => 'success'], 200);
@@ -99,10 +101,21 @@ class JWTAuthController extends Controller
      */
     public function profile()
     {
-        // return response()->json("profile!");
-        return response()->json(["status" => "success", "data" => auth()->user()], 200);
+        $user = auth()->user();
+        return response()->json(["status" => "success", "data" => $user], 200);
     }
 
+    public function get_user($id)
+    {
+        $user = User::find($id);
+        return response()->json(["status" => "success", "data" => $user], 200);
+    }
+
+    public function users()
+    {
+        $users = User::all();
+        return response()->json(["status" => "success", "data" => $users], 200);
+    }
     /**
      * Log the user out (Invalidate the token).
      *
