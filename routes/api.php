@@ -23,7 +23,8 @@ Route::group([
 	'middleware' => 'api',
 	'prefix' => 'auth'
 ], function ($router) {
-	Route::post('register', 'JWTAuthController@register');
+	Route::post('store', 'JWTAuthController@store');
+	Route::post('update', 'JWTAuthController@update');
 	Route::post('login', 'JWTAuthController@login');
 	Route::post('logout', 'JWTAuthController@logout');
 	Route::get('refresh', 'JWTAuthController@refresh');

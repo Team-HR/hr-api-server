@@ -25,45 +25,57 @@ class JWTAuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Request $request)
+
+    public function store(Request $request)
     {
-        // $validator = Validator::make($request->all(), [
-        //     'name' => 'required|between:2,100',
-        //     'username' => 'required|unique:users|max:50',
-        //     'password' => 'required|confirmed|string|min:6',
-        // ]);
+        $rules = [
+            'name' => 'required|min:8|max:255',
+            'username' => 'required|min:3|max:20|unique:users',
+            'roles' => 'required',
+            'password' => 'required|min:8'
+        ];
 
-        // $user = User::create(array_merge(
-        //     $validator->validated(),
-        //     ['password' => bcrypt($request->password)]
-        // ));
+        $request->validate($rules);
+        $user = new User;
+        $user->name = $request->input('name');
+        $user->username = $request->input('username');
+        $user->roles = $request->input('roles');
+        $user->password = $request->input('password');
+        $user->save();
 
-        // return response()->json([
-        //     'message' => 'Successfully registered',
-        //     'user' => $user
-        // ], 201);
-        $v = Validator::make($request->all(), [
-            'name' => 'required|min:6',
-            'username' => 'required|unique:users',
-            // 'roles' => 'required',
-            'password'  => 'required|min:8|confirmed',
-        ]);
+        return response()->json(["status" => "success", "data" => $user]);
+    }
 
-        if ($v->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'errors' => $v->errors()
-            ], 422);
+    public function update(Request $request, User $users)
+    {
+        $user = $users::find($request->id);
+        $password_reset = $request->password_reset;
+        $username_changed = $user->username === $request->username ? false : true;
+
+        $rules = [
+            'name' => 'required|min:8|max:255',
+            'username' => 'required|min:3|max:20',
+            'roles' => 'required',
+        ];
+
+        if ($password_reset) {
+            $rules['password'] = 'required|min:8';
         }
 
-        $user = new User();
+        if ($username_changed) {
+            $rules['username'] = 'required|min:3|max:20|unique:users';
+        }
+
+        $request->validate($rules);
         $user->name = $request->name;
-        $user->username = $request->username;
-        $user->roles = json_encode($request->roles);
-        $user->password = bcrypt($request->password);
+        $username_changed ? $user->username = $request->username : null;
+        $user->roles = $request->roles;
+        $password_reset ? $user->password = bcrypt($request->password) : null;
         $user->save();
-        return response()->json(['status' => 'success'], 200);
+        return response()->json(["status" => "success", "data" => $user]);
     }
+
+
 
     /**
      * Get a JWT via given credentials.
