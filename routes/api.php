@@ -35,6 +35,15 @@ Route::group([
 
 Route::group([
 	'middleware' => 'api',
+	'prefix' => 'user-groups',
+], function ($router) {
+	Route::get('index', 'UserGroupController@index');
+	Route::post('store', 'UserGroupController@store');
+});
+
+
+Route::group([
+	'middleware' => 'api',
 	'prefix' => 'appointments',
 ], function ($router) {
 	Route::get('index', 'AppointmentController@index');
@@ -42,28 +51,3 @@ Route::group([
 	Route::post('complete', 'AppointmentController@complete');
 	Route::post('store', 'AppointmentController@store');
 });
-
-
-// // Route::prefix('v1')->group(function () {
-//     Route::prefix('auth')->group(function () {
-
-//         // Below mention routes are public, user can access those without any restriction.
-//         // Create New User
-//         Route::post('register', 'AuthController@register');
-
-//         // Login User
-//         Route::post('login', 'AuthController@login');
-//         // Refresh the JWT Token
-//         Route::get('refresh', 'AuthController@refresh');
-
-//         // Below mention routes are available only for the authenticated users.
-
-//         Route::middleware('auth:api')->group(function () {
-//             // Get user info
-//             Route::get('user', 'AuthController@profile');
-
-//             // Logout user from application
-//             Route::post('logout', 'AuthController@logout');
-//         });
-//     });
-// // });

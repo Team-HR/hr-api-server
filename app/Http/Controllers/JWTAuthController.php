@@ -17,7 +17,8 @@ class JWTAuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth')->except(['login']);
+        $this->middleware('log')->only(['login', 'store', 'update']);
     }
 
     /**
