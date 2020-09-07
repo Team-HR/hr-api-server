@@ -32,7 +32,7 @@ class JWTAuthController extends Controller
             'name' => 'required|min:8|max:255',
             'username' => 'required|min:3|max:20|unique:users',
             'roles' => 'required',
-            'password' => 'required|min:8'
+            'password' => 'required|min:4'
         ];
 
         $request->validate($rules);
@@ -59,7 +59,7 @@ class JWTAuthController extends Controller
         ];
 
         if ($password_reset) {
-            $rules['password'] = 'required|min:8';
+            $rules['password'] = 'required|min:4';
         }
 
         if ($username_changed) {
