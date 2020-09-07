@@ -84,26 +84,12 @@ class JWTAuthController extends Controller
      */
     public function login(Request $request)
     {
-        // $validator = Validator::make($request->all(), [
-        //     'email' => 'required|email',
-        //     'password' => 'required|string|min:6',
-        // ]);
-
-        // if ($validator->fails()) {
-        //     return response()->json($validator->errors(), 422);
-        // }
-
-        // if (! $token = auth()->attempt($validator->validated())) {
-        //     return response()->json(['error' => 'Unauthorized'], 401);
-        // }
-
-        // return $this->createNewToken($token);
-
         $credentials = $request->only('username', 'password');
         if ($token = $this->guard()->attempt($credentials)) {
             return response()->json(['status' => 'success'], 200)->header('Authorization', $token);
         }
-        return response()->json(['error' => 'login_error'], 401);
+        return response()->json(["status" => "Invalid credentials", 'errors' => ['username' => 'Invalid Credentials', 'password' => 'Invalid Credentials']], 401);
+        // return response()->json(["status" => "Invalid credentials", 'errors' => $request->all()], 401);
     }
 
     /**
