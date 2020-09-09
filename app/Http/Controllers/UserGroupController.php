@@ -8,6 +8,13 @@ use Illuminate\Http\Request;
 
 class UserGroupController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('is_sys_admin');
+        $this->middleware('log')->only(['control_search', 'complete', 'store']);
+        // return "test";
+    }
     /**
      * Display a listing of the resource.
      *

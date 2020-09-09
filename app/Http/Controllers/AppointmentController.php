@@ -17,6 +17,8 @@ class AppointmentController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('log')->only(['control_search', 'complete', 'store']);
+        $this->middleware('is_appointments_admin')->only('complete');
+        // return "test";
     }
     /**
      * Display a listing of the resource.
