@@ -63,3 +63,14 @@ Route::group([
 	Route::post('complete', 'PlantillaJowContractController@complete');
 	Route::post('store', 'PlantillaJowContractController@store');
 });
+
+// payroll api routes
+Route::group([
+	'middleware' => 'api',
+	'prefix' => 'payroll',
+], function ($router) {
+	Route::get('index', 'PayrollController@index');
+	Route::post('control_search', 'PayrollController@control_search');
+	Route::post('complete', 'PayrollController@complete');
+	Route::post('store', 'PayrollController@store');
+});
