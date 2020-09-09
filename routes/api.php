@@ -74,3 +74,14 @@ Route::group([
 	Route::post('complete', 'PayrollController@complete');
 	Route::post('store', 'PayrollController@store');
 });
+
+// tlb api routes
+Route::group([
+	'middleware' => 'api',
+	'prefix' => 'tlb',
+], function ($router) {
+	Route::get('index', 'TlbController@index');
+	Route::post('control_search', 'TlbController@control_search');
+	Route::post('complete', 'TlbController@complete');
+	Route::post('store', 'TlbController@store');
+});
