@@ -41,7 +41,7 @@ Route::group([
 	Route::post('store', 'UserGroupController@store');
 });
 
-
+// appointment api routes
 Route::group([
 	'middleware' => 'api',
 	'prefix' => 'appointments',
@@ -50,4 +50,16 @@ Route::group([
 	Route::post('control_search', 'AppointmentController@control_search');
 	Route::post('complete', 'AppointmentController@complete');
 	Route::post('store', 'AppointmentController@store');
+});
+
+
+// plantilla/jow contracts api routes
+Route::group([
+	'middleware' => 'api',
+	'prefix' => 'plantilla_jocontracts',
+], function ($router) {
+	Route::get('index', 'PlantillaJowContractController@index');
+	Route::post('control_search', 'PlantillaJowContractController@control_search');
+	Route::post('complete', 'PlantillaJowContractController@complete');
+	Route::post('store', 'PlantillaJowContractController@store');
 });

@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\Appointment as AppointmentResource;
-use App\Appointment;
+use App\Http\Resources\PlantillaJowContract as PlantillaJowContractResource;
+use App\PlantillaJowContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Carbon\Traits\Timestamp;
 use Illuminate\Support\Facades\DB;
 
-class AppointmentController extends Controller
+class PlantillaJowContractController extends Controller
 {
     public function __construct()
     {
@@ -18,14 +18,13 @@ class AppointmentController extends Controller
         $this->middleware('log')->only(['control_search', 'complete', 'store']);
         $this->middleware('is_appointments_admin')->only('complete');
     }
-
     public function control_search(Request $request)
     {
         $request->validate([
             'id' => ['required', 'numeric'],
         ]);
-        $appointment = DB::table('appointments')->find($request->input('id'));
-        return response()->json(["status" => "success", "data" => $appointment]);
+        $model = PlantillaJowContract::find($request->input('id'));
+        return response()->json(["status" => "success", "data" => $model]);
     }
 
     public function complete(Request $request)
@@ -33,45 +32,45 @@ class AppointmentController extends Controller
         $request->validate([
             'id' => ['required', 'numeric'],
         ]);
-        $appointment = Appointment::find($request->input('id'));
-        $appointment->is_complete = 1;
-        $date_received = $appointment->date_received;
+        $model = PlantillaJowContract::find($request->input('id'));
+        $model->is_complete = 1;
+        $date_received = $model->date_received;
         $date_completed = now();
-        $appointment->date_completed = $date_completed;
+        $model->date_completed = $date_completed;
         $starttimestamp = strtotime($date_received);
         $endtimestamp = strtotime($date_completed);
         $difference = abs($endtimestamp - $starttimestamp); // / 3600;
-        $appointment->turn_around_time = $difference;
-        $appointment->save();
+        $model->turn_around_time = $difference;
+        $model->save();
         return response()->json(["status" => "success"], 201);
     }
 
     public function index()
     {
-        $appointments = AppointmentResource::collection(Appointment::orderBy('created_at', 'desc')->get());
-        return response()->json(["status" => "success", "data" => $appointments], 200);
+        $resource = PlantillaJowContractResource::collection(PlantillaJowContract::orderBy('created_at', 'desc')->get());
+        return response()->json(["status" => "success", "data" => $resource], 200);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:255',
-            'position' => 'required|max:255',
-            'date_of_effectivity' => 'required',
+            'date1' => 'required',
+            'date2' => 'required',
+            'description' => 'required|max:255',
         ]);
-        $appointment = Appointment::updateOrCreate(
+        $model = PlantillaJowContract::updateOrCreate(
             ['id' => $request->input('id')],
             [
                 'date_received' => $request->input('date_received') ? $request->input('date_received') : now(),
-                'name' => $request->input('name'),
-                'position' => $request->input('position'),
-                'date_of_effectivity' => $request->input('date_of_effectivity'),
+                'date1' => $request->input('date1'),
+                'date2' => $request->input('date2'),
+                'description' => $request->input('description'),
                 'needs_revision' => $request->input('needs_revision'),
                 'remarks' => $request->input('remarks'),
                 'is_complete' => $request->input('is_complete') ? $request->input('is_complete') : 0,
                 'date_completed' => $request->input('date_completed')
             ]
         );
-        return response()->json(["status" => "success", "data" => $appointment]);
+        return response()->json(["status" => "success", "data" => $model]);
     }
 }
