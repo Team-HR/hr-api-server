@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Carbon\Traits\Timestamp;
 use Illuminate\Support\Facades\DB;
+use App\Events\AppointmentDocEvent;
 
 class AppointmentController extends Controller
 {
@@ -72,6 +73,7 @@ class AppointmentController extends Controller
                 'date_completed' => $request->input('date_completed')
             ]
         );
+        event(new AppointmentDocEvent());
         return response()->json(["status" => "success", "data" => $appointment]);
     }
 }
