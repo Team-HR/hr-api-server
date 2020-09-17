@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models\hrdms;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PlantillaJowContract extends Model
+class HrdmsPlantilla extends Model
 {
     protected $fillable = [
         'id',

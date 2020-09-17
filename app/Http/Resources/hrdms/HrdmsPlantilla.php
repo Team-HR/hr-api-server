@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\hrdms;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Payroll extends JsonResource
+class HrdmsPlantilla extends JsonResource
 {
     /**
      * Indicates if the resource's collection keys should be preserved.

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\hrdms;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Appointment extends JsonResource
+class HrdmsPayroll extends JsonResource
 {
     /**
      * Indicates if the resource's collection keys should be preserved.
@@ -31,9 +31,9 @@ class Appointment extends JsonResource
         return [
             "id" => $this->id,
             "date_received" => $this->date_received,
-            "name" => $this->name,
-            "position" => $this->position,
-            "date_of_effectivity" => $this->date_of_effectivity,
+            "date1" => $this->date1,
+            "date2" => $this->date2,
+            "description" => $this->description,
             "needs_revision" => $this->needs_revision,
             "remarks" => $this->remarks,
             "is_complete" => $this->is_complete,

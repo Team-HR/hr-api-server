@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\hrdms;
 
-use App\Http\Resources\PlantillaJowContract as PlantillaJowContractResource;
-use App\PlantillaJowContract;
+use App\Http\Resources\hrdms\HrdmsPlantilla as HrdmsPlantillaResource;
+use App\Models\hrdms\HrdmsPlantilla;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Carbon\Traits\Timestamp;
 use Illuminate\Support\Facades\DB;
 
-class PlantillaJowContractController extends Controller
+class HrdmsPlantillaController extends Controller
 {
     public function __construct()
     {
@@ -23,7 +23,7 @@ class PlantillaJowContractController extends Controller
         $request->validate([
             'id' => ['required', 'numeric'],
         ]);
-        $model = PlantillaJowContract::find($request->input('id'));
+        $model = HrdmsPlantilla::find($request->input('id'));
         return response()->json(["status" => "success", "data" => $model]);
     }
 
@@ -32,7 +32,7 @@ class PlantillaJowContractController extends Controller
         $request->validate([
             'id' => ['required', 'numeric'],
         ]);
-        $model = PlantillaJowContract::find($request->input('id'));
+        $model = HrdmsPlantilla::find($request->input('id'));
         $model->is_complete = 1;
         $date_received = $model->date_received;
         $date_completed = now();
@@ -47,7 +47,7 @@ class PlantillaJowContractController extends Controller
 
     public function index()
     {
-        $resource = PlantillaJowContractResource::collection(PlantillaJowContract::orderBy('created_at', 'desc')->get());
+        $resource = HrdmsPlantillaResource::collection(HrdmsPlantilla::orderBy('created_at', 'desc')->get());
         return response()->json(["status" => "success", "data" => $resource], 200);
     }
 
@@ -58,7 +58,7 @@ class PlantillaJowContractController extends Controller
             'date2' => 'required',
             'description' => 'required|max:255',
         ]);
-        $model = PlantillaJowContract::updateOrCreate(
+        $model = HrdmsPlantilla::updateOrCreate(
             ['id' => $request->input('id')],
             [
                 'date_received' => $request->input('date_received') ? $request->input('date_received') : now(),

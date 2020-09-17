@@ -45,43 +45,47 @@ Route::group([
 Route::group([
 	'middleware' => 'api',
 	'prefix' => 'appointments',
+	'namespace' => 'hrdms'
 ], function ($router) {
-	Route::get('index', 'AppointmentController@index');
-	Route::post('control_search', 'AppointmentController@control_search');
-	Route::post('complete', 'AppointmentController@complete');
-	Route::post('store', 'AppointmentController@store');
-});
-
-
-// plantilla/jow contracts api routes
-Route::group([
-	'middleware' => 'api',
-	'prefix' => 'plantilla_jocontracts',
-], function ($router) {
-	Route::get('index', 'PlantillaJowContractController@index');
-	Route::post('control_search', 'PlantillaJowContractController@control_search');
-	Route::post('complete', 'PlantillaJowContractController@complete');
-	Route::post('store', 'PlantillaJowContractController@store');
+	Route::get('index', 'HrdmsAppointmentController@index');
+	Route::post('control_search', 'HrdmsAppointmentController@control_search');
+	Route::post('complete', 'HrdmsAppointmentController@complete');
+	Route::post('store', 'HrdmsAppointmentController@store');
 });
 
 // payroll api routes
 Route::group([
 	'middleware' => 'api',
 	'prefix' => 'payroll',
+	'namespace' => 'hrdms'
+
 ], function ($router) {
-	Route::get('index', 'PayrollController@index');
-	Route::post('control_search', 'PayrollController@control_search');
-	Route::post('complete', 'PayrollController@complete');
-	Route::post('store', 'PayrollController@store');
+	Route::get('index', 'HrdmsPayrollController@index');
+	Route::post('control_search', 'HrdmsPayrollController@control_search');
+	Route::post('complete', 'HrdmsPayrollController@complete');
+	Route::post('store', 'HrdmsPayrollController@store');
+});
+
+// plantilla/jow contracts api routes
+Route::group([
+	'middleware' => 'api',
+	'prefix' => 'plantilla_jocontracts',
+	'namespace' => 'hrdms'
+], function ($router) {
+	Route::get('index', 'HrdmsPlantillaController@index');
+	Route::post('control_search', 'HrdmsPlantillaController@control_search');
+	Route::post('complete', 'HrdmsPlantillaController@complete');
+	Route::post('store', 'HrdmsPlantillaController@store');
 });
 
 // tlb api routes
 Route::group([
 	'middleware' => 'api',
 	'prefix' => 'tlb',
+	'namespace' => 'hrdms'
 ], function ($router) {
-	Route::get('index', 'TlbController@index');
-	Route::post('control_search', 'TlbController@control_search');
-	Route::post('complete', 'TlbController@complete');
-	Route::post('store', 'TlbController@store');
+	Route::get('index', 'HrdmsTlbController@index');
+	Route::post('control_search', 'HrdmsTlbController@control_search');
+	Route::post('complete', 'HrdmsTlbController@complete');
+	Route::post('store', 'HrdmsTlbController@store');
 });

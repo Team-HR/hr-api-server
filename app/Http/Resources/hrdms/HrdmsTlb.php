@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\hrdms;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PlantillaJowContract extends JsonResource
+class HrdmsTlb extends JsonResource
 {
     /**
      * Indicates if the resource's collection keys should be preserved.
@@ -31,8 +31,7 @@ class PlantillaJowContract extends JsonResource
         return [
             "id" => $this->id,
             "date_received" => $this->date_received,
-            "date1" => $this->date1,
-            "date2" => $this->date2,
+            "name" => $this->name,
             "description" => $this->description,
             "needs_revision" => $this->needs_revision,
             "remarks" => $this->remarks,

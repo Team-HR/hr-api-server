@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePayrollsTable extends Migration
+class CreateHrdmsPlantillasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreatePayrollsTable extends Migration
      */
     public function up()
     {
-        Schema::create('payrolls', function (Blueprint $table) {
+        Schema::create('hrdms_plantillas', function (Blueprint $table) {
             $table->id();
             $table->dateTime('date_received');
-            $table->date('date1')->nullable();
-            $table->date('date2')->nullable();
+            $table->date('date1');
+            $table->date('date2');
             $table->string('description', 100);
             $table->boolean('needs_revision');
             $table->string('remarks', 100)->nullable();
@@ -35,6 +35,6 @@ class CreatePayrollsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payrolls');
+        Schema::dropIfExists('hrdms_plantillas');
     }
 }

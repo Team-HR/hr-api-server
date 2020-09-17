@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models\hrdms;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Payroll extends Model
+class HrdmsPayroll extends Model
 {
     protected $fillable = [
         'id',

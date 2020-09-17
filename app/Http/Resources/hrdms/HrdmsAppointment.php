@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\hrdms;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Tlb extends JsonResource
+class HrdmsAppointment extends JsonResource
 {
     /**
      * Indicates if the resource's collection keys should be preserved.
@@ -32,7 +32,8 @@ class Tlb extends JsonResource
             "id" => $this->id,
             "date_received" => $this->date_received,
             "name" => $this->name,
-            "description" => $this->description,
+            "position" => $this->position,
+            "date_of_effectivity" => $this->date_of_effectivity,
             "needs_revision" => $this->needs_revision,
             "remarks" => $this->remarks,
             "is_complete" => $this->is_complete,

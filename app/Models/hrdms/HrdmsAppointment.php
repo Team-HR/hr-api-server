@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models\hrdms;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Appointment extends Model
+class HrdmsAppointment extends Model
 {
 	protected $fillable = [
 		'id',

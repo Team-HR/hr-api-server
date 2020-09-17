@@ -1,12 +1,10 @@
 <?php
 
-use Brick\Math\BigInteger;
-use Hamcrest\Type\IsBoolean;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAppointmentsTable extends Migration
+class CreateHrdmsTlbsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,12 +13,11 @@ class CreateAppointmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('appointments', function (Blueprint $table) {
+        Schema::create('hrdms_tlbs', function (Blueprint $table) {
             $table->id();
             $table->dateTime('date_received');
             $table->string('name', 100);
-            $table->string('position', 100);
-            $table->date('date_of_effectivity');
+            $table->string('description', 100);
             $table->boolean('needs_revision');
             $table->string('remarks', 100)->nullable();
             $table->boolean('is_complete');
@@ -37,6 +34,6 @@ class CreateAppointmentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('appointments');
+        Schema::dropIfExists('hrdms_tlbs');
     }
 }

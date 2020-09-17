@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTlbsTable extends Migration
+class CreateHrdmsPayrollsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateTlbsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tlbs', function (Blueprint $table) {
+        Schema::create('hrdms_payrolls', function (Blueprint $table) {
             $table->id();
             $table->dateTime('date_received');
-            $table->string('name', 100);
+            $table->date('date1')->nullable();
+            $table->date('date2')->nullable();
             $table->string('description', 100);
             $table->boolean('needs_revision');
             $table->string('remarks', 100)->nullable();
@@ -34,6 +35,6 @@ class CreateTlbsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tlbs');
+        Schema::dropIfExists('hrdms_payrolls');
     }
 }

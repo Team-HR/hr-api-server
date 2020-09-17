@@ -1,10 +1,12 @@
 <?php
 
+use Brick\Math\BigInteger;
+use Hamcrest\Type\IsBoolean;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePlantillaJowContractsTable extends Migration
+class CreateHrdmsAppointmentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +15,12 @@ class CreatePlantillaJowContractsTable extends Migration
      */
     public function up()
     {
-        Schema::create('plantilla_jow_contracts', function (Blueprint $table) {
+        Schema::create('hrdms_appointments', function (Blueprint $table) {
             $table->id();
             $table->dateTime('date_received');
-            $table->date('date1');
-            $table->date('date2');
-            $table->string('description', 100);
+            $table->string('name', 100);
+            $table->string('position', 100);
+            $table->date('date_of_effectivity');
             $table->boolean('needs_revision');
             $table->string('remarks', 100)->nullable();
             $table->boolean('is_complete');
@@ -35,6 +37,6 @@ class CreatePlantillaJowContractsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('plantilla_jow_contracts');
+        Schema::dropIfExists('hrdms_appointments');
     }
 }
