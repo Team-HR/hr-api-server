@@ -89,3 +89,12 @@ Route::group([
 	Route::post('complete', 'HrdmsTlbController@complete');
 	Route::post('store', 'HrdmsTlbController@store');
 });
+
+// employees api routes
+Route::group([
+	'middleware' => 'api',
+	'prefix' => 'employees',
+	// 'namespace' => 'hrdms'
+], function ($router) {
+	Route::get('/', 'EmployeeController@index');
+});
