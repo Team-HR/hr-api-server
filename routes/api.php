@@ -97,4 +97,5 @@ Route::group([
 	// 'namespace' => 'hrdms'
 ], function ($router) {
 	Route::get('/', 'EmployeeController@index');
+	Route::post('store', 'EmployeeController@store');
 });

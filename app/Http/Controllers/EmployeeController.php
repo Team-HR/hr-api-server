@@ -36,7 +36,24 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'gender' => 'required|max:6',
+            'first_name' => 'required|max:100',
+            'last_name' => 'required|max:1',
+        ]);
+        // $model = HrdmsTlb::updateOrCreate(
+        //     ['id' => $request->input('id')],
+        //     [
+        //         'date_received' => $request->input('date_received') ? $request->input('date_received') : now(),
+        //         'name' => $request->input('name'),
+        //         'description' => $request->input('description'),
+        //         'needs_revision' => $request->input('needs_revision'),
+        //         'remarks' => $request->input('remarks'),
+        //         'is_complete' => $request->input('is_complete') ? $request->input('is_complete') : 0,
+        //         'date_completed' => $request->input('date_completed')
+        //     ]
+        // );
+        return response()->json($request);
     }
 
     /**
