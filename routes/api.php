@@ -109,3 +109,16 @@ Route::group([
 ], function ($router) {
 	Route::get('/select_items', 'DepartmentController@get_select_items');
 });
+
+
+// talent_assessment api routes
+Route::group([	
+	'middleware' => 'api',
+	'prefix' => 'talent-assessment',
+	// 'namespace' => 'hrdms'
+], function ($router) {
+	Route::get('/', 'TalentAssessmentController@index');
+	// Route::get('/select_items/{department_id}', 'EmployeeController@get_select_items');
+	Route::post('store', 'TalentAssessmentController@store');
+});
+
