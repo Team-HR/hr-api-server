@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\selects\Department as DepartmentSelectResource;
 use App\Department;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,12 @@ class DepartmentController extends Controller
     public function index()
     {
         //
+    }
+
+    public function get_select_items()
+    {
+        $departments = DepartmentSelectResource::collection(Department::orderBy('department', 'asc')->get());
+        return response()->json($departments);
     }
 
     /**

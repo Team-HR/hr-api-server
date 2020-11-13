@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\selects\Employee as EmployeeSelectResource;
 use App\Employee;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,19 @@ class EmployeeController extends Controller
     public function index()
     {
         $employees = Employee::all();
+        return response()->json($employees);
+    }
+
+    public function get_select_items($department_id)
+    {
+        // $department_id = "";
+        $employee = Employee::orderBy('last_name', 'asc');
+
+        if ($department_id) {
+            $employee = $employee->where('department_id', $department_id);
+        }
+        
+        $employees = EmployeeSelectResource::collection($employee->get());
         return response()->json($employees);
     }
 

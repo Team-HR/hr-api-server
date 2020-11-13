@@ -91,11 +91,21 @@ Route::group([
 });
 
 // employees api routes
-Route::group([
+Route::group([	
 	'middleware' => 'api',
 	'prefix' => 'employees',
 	// 'namespace' => 'hrdms'
 ], function ($router) {
 	Route::get('/', 'EmployeeController@index');
+	Route::get('/select_items/{department_id}', 'EmployeeController@get_select_items');
 	Route::post('store', 'EmployeeController@store');
+});
+
+
+// departments api routes
+Route::group([
+	'middleware' => 'api',
+	'prefix' => 'departments',
+], function ($router) {
+	Route::get('/select_items', 'DepartmentController@get_select_items');
 });
