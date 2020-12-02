@@ -13,8 +13,8 @@ class TalentAssessmentController extends Controller
      */
     public function index()
     {
-        // $employees = Employee::all();
-        return response()->json("TESTING TALENT ASSESSMENT");
+        $surveys = Survey::all();
+        return response()->json($surveys);
     }
 
     /**
