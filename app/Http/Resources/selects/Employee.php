@@ -18,7 +18,8 @@ class Employee extends JsonResource
         return [
             "text" => $this->full_name,
             "value" => $this->id,
-            "department" => $this->department
+            "department_id" => $this->department_id,
+            "department"=> $this->department
         ];
     }
 }

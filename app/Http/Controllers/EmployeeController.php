@@ -24,7 +24,7 @@ class EmployeeController extends Controller
         // $department_id = "";
         $employee = Employee::orderBy('last_name', 'asc');
 
-        if ($department_id) {
+        if ($department_id && $department_id != 0) {
             $employee = $employee->where('department_id', $department_id);
         }
         
