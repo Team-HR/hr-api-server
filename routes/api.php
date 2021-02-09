@@ -89,3 +89,36 @@ Route::group([
 	Route::post('complete', 'HrdmsTlbController@complete');
 	Route::post('store', 'HrdmsTlbController@store');
 });
+
+// employees api routes
+Route::group([	
+	'middleware' => 'api',
+	'prefix' => 'employees',
+	// 'namespace' => 'hrdms'
+], function ($router) {
+	Route::get('/', 'EmployeeController@index');
+	Route::get('/select_items/{department_id}', 'EmployeeController@get_select_items');
+	Route::post('store', 'EmployeeController@store');
+});
+
+
+// departments api routes
+Route::group([
+	'middleware' => 'api',
+	'prefix' => 'departments',
+], function ($router) {
+	Route::get('/select_items', 'DepartmentController@get_select_items');
+});
+
+
+// talent_assessment api routes
+Route::group([	
+	'middleware' => 'api',
+	'prefix' => 'talent-assessment',
+	// 'namespace' => 'hrdms'
+], function ($router) {
+	Route::get('/', 'TalentAssessmentController@index');
+	// Route::get('/select_items/{department_id}', 'EmployeeController@get_select_items');
+	Route::post('store', 'TalentAssessmentController@store');
+});
+
