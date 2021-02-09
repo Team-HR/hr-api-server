@@ -41,7 +41,7 @@ class JWTAuthController extends Controller
         $user->name = $request->input('name');
         $user->username = $request->input('username');
         $user->roles = $request->input('roles');
-        $user->password = $request->input('password');
+        $user->password = bcrypt($request->input('password'));
         $user->save();
 
         return response()->json(["status" => "success", "data" => $user]);
