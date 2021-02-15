@@ -4,6 +4,7 @@ namespace App\Http\Controllers\rnr;
 
 use App\Models\rnr\RnrSurvey;
 use App\Models\rnr\RnrSurveyRecord;
+use App\Models\rnr\RnrSurveyEsibRecord;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -82,7 +83,24 @@ class RnrSurveyController extends Controller
         return response()->json(["status" => "success", "data" => $rnr_survey_record]);
     }
 
+    public function store_esib_2020(Request $request)
+    {
+        // $rules = [
+        //     'name' => 'required|min:8|max:255',
+        //     'username' => 'required|min:3|max:20|unique:users',
+        //     'roles' => 'required',
+        //     'password' => 'required|min:4'
+        // ];
 
+        // $request->validate($rules);
+        $records = new RnrSurveyEsibRecord;
+        $records->answers = serialize($request->input('answers'));
+        // $rnr_survey_record->password = bcrypt($request->input('password'));
+        $records->save();
+
+        return response()->json(["status" => "success", "data" => $records]);
+    }
+    
     // public function store(Request $request)
     // {
     //     $rules = [

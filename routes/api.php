@@ -133,5 +133,6 @@ Route::group([
 	Route::get('/{id}', 'RnrSurveyController@get_awardee');
 	// Route::get('/select_items/{department_id}', 'EmployeeController@get_select_items');
 	Route::post('store', 'RnrSurveyController@store');
+	Route::post('store_esib_2020', 'RnrSurveyController@store_esib_2020');
 });
 
