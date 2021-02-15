@@ -122,3 +122,16 @@ Route::group([
 	Route::post('store', 'TalentAssessmentController@store');
 });
 
+
+
+// rnr_surveys api routes
+Route::group([	
+	'middleware' => 'api',
+	'prefix' => 'rnr-survey',
+	'namespace' => 'rnr'
+], function ($router) {
+	Route::get('/{id}', 'RnrSurveyController@get_awardee');
+	// Route::get('/select_items/{department_id}', 'EmployeeController@get_select_items');
+	Route::post('store', 'RnrSurveyController@store');
+});
+
