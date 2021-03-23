@@ -136,3 +136,15 @@ Route::group([
 	Route::post('store_esib_2020', 'RnrSurveyController@store_esib_2020');
 });
 
+
+// competency api routes
+Route::group([	
+	'middleware' => 'api',
+	'prefix' => 'competency',
+	// 'namespace' => 'rnr'
+], function ($router) {
+	Route::get('/peers', 'CompetencyController@get_peers');
+	Route::get('/questionnaire', 'CompetencyController@get_questionnaire');
+	Route::post('/store', 'CompetencyController@store');
+});
+

@@ -18,7 +18,6 @@ class RnrSurveyController extends Controller
      */
     public function get_awardee($id)
     {
-
         $rnr_surveys = RnrSurvey::find($id);
         // $rnr_surveys = RnrSurvey::all();
         return response()->json($rnr_surveys);
