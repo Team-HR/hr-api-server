@@ -12,6 +12,7 @@ use App\Questionnaire;
 use App\QuestionnaireItem;
 use App\QuestionnaireOption;
 use App\QuestionnaireRecord;
+use App\Employee;
 
 
 
@@ -56,7 +57,7 @@ class CompetencyController extends Controller
                     'superiors_record_id' => $peer->id,
                     'superior_id' => $peer->superior_id,
                     'employee_id' => $peer->employee_id,
-                    'name' => $peer->name,
+                    'full_name' => $peer->name,
                     'questionnaire_id' => $peer->questionnaire_id,
                     'is_complete' => $peer->is_complete,
                     'competency_records' => $peer->competency_records,
@@ -65,6 +66,60 @@ class CompetencyController extends Controller
         }
         return response()->json($data);
     }
+
+    /**
+     * Get list of employees without assigned supervisor and questionnaire.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function get_free_employees()
+    {
+        $data = array();
+        // $employees = Employee::all();
+        // foreach ($employees as $employee) {
+        //     array_push(
+        //         $data,
+        //         array(
+        //             'employee_id' => $employee->id,
+        //             'full_name' => $employee->full_name,
+        //         )
+        //     );
+        // }
+        // return response()->json($data);
+        //  get authed user id and find superior_idsuperiors
+        $auth_employee_id = auth()->user()->employee_id;
+        // $auth_employee_id = 9;
+        $superior_id = Superior::where('employee_id', $auth_employee_id)->get('id')->first()['id'];
+        //  get questionnaire_id
+        $questionnaire_id = 1;
+
+        $employees = SuperiorsRecord::where([
+          ['superior_id','=',$superior_id],
+          ['questionnaire_id','=',$questionnaire_id]
+        ])->get(['employee_id']);
+        $emps_in_rec = array();
+
+        foreach ($employees as $employee) {
+            array_push(
+                $emps_in_rec,
+                $employee->employee_id
+            );
+        }
+        $free_emps = array();
+        $data = Employee::whereNotIn('id', $emps_in_rec  )->get();
+        foreach ($data as $dat) {
+            array_push(
+                $free_emps,
+                array(
+                    'employee_id' => $dat->id,
+                    'full_name' => $dat->full_name,
+                )
+            );
+        }
+        return response()->json($free_emps);
+    }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -89,7 +144,7 @@ class CompetencyController extends Controller
 
 
         // check if competency_records dont have 'empties'
-        
+
         // foreach ($competency_records as $rec) {
         //    if($rec['questionnaire_option_id'] = null){
         //     return response()->json('inc');
@@ -113,7 +168,7 @@ class CompetencyController extends Controller
 
         SuperiorsRecord::where('id', $request['superiors_record_id'])
           ->update(['is_complete' => 1]);
-        
+
 
         // $request->validate([
         //         'title' => 'required|min:6',
@@ -123,8 +178,67 @@ class CompetencyController extends Controller
     }
 
 
+
     /**
-     * Store once initially the quesionnaire to DB.
+     * Add peer to supervisor records.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function add_peer(Request $request)
+    {
+      //  get authed user id and find superior_idsuperiors
+      $auth_employee_id = auth()->user()->employee_id;
+      $superior_id = Superior::where('employee_id', $auth_employee_id)->get('id')->first()['id'];
+      //  get questionnaire_id
+      $questionnaire_id = 1;
+      //  db insert
+
+          $record = new SuperiorsRecord;
+
+          $record->superior_id = $superior_id;
+          $record->employee_id = $request->employee_id;
+          $record->questionnaire_id = $questionnaire_id;
+          $record->is_complete = 0;
+
+          $record->save();
+
+
+          $data = array(
+            'competency_records' => $record->competency_records,
+            'employee_id' => $record->employee_id,
+            'full_name' => $record->name,
+            'is_complete' => $record->is_complete,
+            'questionnaire_id' => $record->questionnaire_id,
+            'superior_id' => $record->superior_id,
+            'superiors_record_id' => $record->id,
+          );
+
+
+        return response()->json($data);
+    }
+
+    /**
+     * Remove peer from supervisor records  .
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function delete_peer(Request $request)
+    {
+      $employee = $request->employee;
+      $superiors_record_id = $employee['superiors_record_id'];
+      // delete emp from SuperiorsRecord
+      $rec = SuperiorsRecord::find($superiors_record_id);
+      $rec->delete();
+      // delete emps recs from QuestionnaireRecord
+      $qrec = QuestionnaireRecord::where('superiors_record_id', $superiors_record_id)->delete();
+      return response()->json($superiors_record_id.": Deleted!");
+    }
+
+
+    /**
+     * Store once initially the quesionnaire to DB.superiors_record_id
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

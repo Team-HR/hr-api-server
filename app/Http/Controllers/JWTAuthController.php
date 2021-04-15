@@ -108,7 +108,7 @@ class JWTAuthController extends Controller
     {
         $user = User::find($id);
         return response()->json(["status" => "success", "data" => $user], 200);
-    }
+    }   
 
     public function users()
     {

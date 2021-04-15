@@ -91,7 +91,7 @@ Route::group([
 });
 
 // employees api routes
-Route::group([	
+Route::group([
 	'middleware' => 'api',
 	'prefix' => 'employees',
 	// 'namespace' => 'hrdms'
@@ -112,7 +112,7 @@ Route::group([
 
 
 // talent_assessment api routes
-Route::group([	
+Route::group([
 	'middleware' => 'api',
 	'prefix' => 'talent-assessment',
 	// 'namespace' => 'hrdms'
@@ -125,7 +125,7 @@ Route::group([
 
 
 // rnr_surveys api routes
-Route::group([	
+Route::group([
 	'middleware' => 'api',
 	'prefix' => 'rnr-survey',
 	'namespace' => 'rnr'
@@ -138,7 +138,7 @@ Route::group([
 
 
 // competency api routes
-Route::group([	
+Route::group([
 	'middleware' => 'api',
 	'prefix' => 'competency',
 	// 'namespace' => 'rnr'
@@ -146,5 +146,7 @@ Route::group([
 	Route::get('/peers', 'CompetencyController@get_peers');
 	Route::get('/questionnaire', 'CompetencyController@get_questionnaire');
 	Route::post('/store', 'CompetencyController@store');
+	Route::post('/addPeer', 'CompetencyController@add_peer');
+	Route::post('/deletePeer', 'CompetencyController@delete_peer');
+	Route::get('/free_employees', 'CompetencyController@get_free_employees');
 });
-
