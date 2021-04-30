@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\selects\Department as DepartmentSelectResource;
-use App\Department;
 use Illuminate\Http\Request;
+use App\Office;
 
-class DepartmentController extends Controller
+class OfficeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,14 +15,7 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        $departments = Department::all();
-        return response()->json($departmevvnts);
-    }
-
-    public function get_select_items()
-    {
-        $departments = DepartmentSelectResource::collection(Department::orderBy('department', 'asc')->get());
-        return response()->json($departments);
+        //
     }
 
     /**
@@ -52,9 +45,10 @@ class DepartmentController extends Controller
      * @param  \App\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function show(Department $department)
+    public function show($id)
     {
-        return response()->json($departments);
+        $office = Office::find($id);
+        return response()->json($office);
     }
 
     /**

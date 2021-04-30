@@ -107,7 +107,16 @@ Route::group([
 	'middleware' => 'api',
 	'prefix' => 'departments',
 ], function ($router) {
+	Route::get('/','DepartmentController@index');
 	Route::get('/select_items', 'DepartmentController@get_select_items');
+});
+
+// office api routes
+Route::group([
+	'middleware' => 'api',
+	'prefix' => 'office',
+], function ($router) {
+	Route::get('/{id}', 'OfficeController@show');
 });
 
 
@@ -149,4 +158,16 @@ Route::group([
 	Route::post('/addPeer', 'CompetencyController@add_peer');
 	Route::post('/deletePeer', 'CompetencyController@delete_peer');
 	Route::get('/free_employees', 'CompetencyController@get_free_employees');
+});
+
+
+// staff management
+// staff_management/offices
+// competency api routes
+Route::group([
+	'middleware' => 'api',
+	'prefix' => 'staff-management',
+	// 'namespace' => 'rnr'
+], function ($router) {
+	Route::get('/offices', 'SupervisorManagementController@get_offices');
 });
