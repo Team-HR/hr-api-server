@@ -13,8 +13,7 @@ use App\QuestionnaireItem;
 use App\QuestionnaireOption;
 use App\QuestionnaireRecord;
 use App\Employee;
-
-
+use App\Office;
 
 class CompetencyController extends Controller
 {
@@ -87,15 +86,15 @@ class CompetencyController extends Controller
         // }
         // return response()->json($data);
         //  get authed user id and find superior_idsuperiors
-        $auth_employee_id = auth()->user()->employee_id;
-        // $auth_employee_id = 9;
+        // $auth_employee_id = auth()->user()->employee_id;
+        $auth_employee_id = 9;
         $superior_id = Superior::where('employee_id', $auth_employee_id)->get('id')->first()['id'];
         //  get questionnaire_id
         $questionnaire_id = 1;
 
         $employees = SuperiorsRecord::where([
-          ['superior_id','=',$superior_id],
-          ['questionnaire_id','=',$questionnaire_id]
+            ['superior_id', '=', $superior_id],
+            ['questionnaire_id', '=', $questionnaire_id]
         ])->get(['employee_id']);
         $emps_in_rec = array();
 
@@ -106,7 +105,7 @@ class CompetencyController extends Controller
             );
         }
         $free_emps = array();
-        $data = Employee::whereNotIn('id', $emps_in_rec  )->get();
+        $data = Employee::whereNotIn('id', $emps_in_rec)->get();
         foreach ($data as $dat) {
             array_push(
                 $free_emps,
@@ -130,6 +129,7 @@ class CompetencyController extends Controller
     {
         //
     }
+
 
     /**
      * Store (create or update) peer data to questionnaire records to DB.
@@ -167,7 +167,7 @@ class CompetencyController extends Controller
 
 
         SuperiorsRecord::where('id', $request['superiors_record_id'])
-          ->update(['is_complete' => 1]);
+            ->update(['is_complete' => 1]);
 
 
         // $request->validate([
@@ -187,24 +187,24 @@ class CompetencyController extends Controller
      */
     public function add_peer(Request $request)
     {
-      //  get authed user id and find superior_idsuperiors
-      $auth_employee_id = auth()->user()->employee_id;
-      $superior_id = Superior::where('employee_id', $auth_employee_id)->get('id')->first()['id'];
-      //  get questionnaire_id
-      $questionnaire_id = 1;
-      //  db insert
+        //  get authed user id and find superior_idsuperiors
+        $auth_employee_id = auth()->user()->employee_id;
+        $superior_id = Superior::where('employee_id', $auth_employee_id)->get('id')->first()['id'];
+        //  get questionnaire_id
+        $questionnaire_id = 1;
+        //  db insert
 
-          $record = new SuperiorsRecord;
+        $record = new SuperiorsRecord;
 
-          $record->superior_id = $superior_id;
-          $record->employee_id = $request->employee_id;
-          $record->questionnaire_id = $questionnaire_id;
-          $record->is_complete = 0;
+        $record->superior_id = $superior_id;
+        $record->employee_id = $request->employee_id;
+        $record->questionnaire_id = $questionnaire_id;
+        $record->is_complete = 0;
 
-          $record->save();
+        $record->save();
 
 
-          $data = array(
+        $data = array(
             'competency_records' => $record->competency_records,
             'employee_id' => $record->employee_id,
             'full_name' => $record->name,
@@ -212,7 +212,7 @@ class CompetencyController extends Controller
             'questionnaire_id' => $record->questionnaire_id,
             'superior_id' => $record->superior_id,
             'superiors_record_id' => $record->id,
-          );
+        );
 
 
         return response()->json($data);
@@ -226,14 +226,14 @@ class CompetencyController extends Controller
      */
     public function delete_peer(Request $request)
     {
-      $employee = $request->employee;
-      $superiors_record_id = $employee['superiors_record_id'];
-      // delete emp from SuperiorsRecord
-      $rec = SuperiorsRecord::find($superiors_record_id);
-      $rec->delete();
-      // delete emps recs from QuestionnaireRecord
-      $qrec = QuestionnaireRecord::where('superiors_record_id', $superiors_record_id)->delete();
-      return response()->json($superiors_record_id.": Deleted!");
+        $employee = $request->employee;
+        $superiors_record_id = $employee['superiors_record_id'];
+        // delete emp from SuperiorsRecord
+        $rec = SuperiorsRecord::find($superiors_record_id);
+        $rec->delete();
+        // delete emps recs from QuestionnaireRecord
+        $qrec = QuestionnaireRecord::where('superiors_record_id', $superiors_record_id)->delete();
+        return response()->json($superiors_record_id . ": Deleted!");
     }
 
 

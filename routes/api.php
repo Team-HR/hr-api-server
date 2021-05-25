@@ -5,10 +5,10 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| API Routes
+| API ROUTES
 |--------------------------------------------------------------------------
 |
-| Here is where you can register API routes for your application. These
+| Here is where you can register API Routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
@@ -41,7 +41,7 @@ Route::group([
 	Route::post('store', 'UserGroupController@store');
 });
 
-// appointment api routes
+// appointment 
 Route::group([
 	'middleware' => 'api',
 	'prefix' => 'appointments',
@@ -53,7 +53,7 @@ Route::group([
 	Route::post('store', 'HrdmsAppointmentController@store');
 });
 
-// payroll api routes
+// payroll 
 Route::group([
 	'middleware' => 'api',
 	'prefix' => 'payroll',
@@ -66,7 +66,7 @@ Route::group([
 	Route::post('store', 'HrdmsPayrollController@store');
 });
 
-// plantilla/jow contracts api routes
+// plantilla/jow contracts 
 Route::group([
 	'middleware' => 'api',
 	'prefix' => 'plantilla_jocontracts',
@@ -78,7 +78,7 @@ Route::group([
 	Route::post('store', 'HrdmsPlantillaController@store');
 });
 
-// tlb api routes
+// tlb 
 Route::group([
 	'middleware' => 'api',
 	'prefix' => 'tlb',
@@ -90,37 +90,7 @@ Route::group([
 	Route::post('store', 'HrdmsTlbController@store');
 });
 
-// employees api routes
-Route::group([
-	'middleware' => 'api',
-	'prefix' => 'employees',
-	// 'namespace' => 'hrdms'
-], function ($router) {
-	Route::get('/', 'EmployeeController@index');
-	Route::get('/select_items/{department_id}', 'EmployeeController@get_select_items');
-	Route::post('store', 'EmployeeController@store');
-});
-
-
-// departments api routes
-Route::group([
-	'middleware' => 'api',
-	'prefix' => 'departments',
-], function ($router) {
-	Route::get('/','DepartmentController@index');
-	Route::get('/select_items', 'DepartmentController@get_select_items');
-});
-
-// office api routes
-Route::group([
-	'middleware' => 'api',
-	'prefix' => 'office',
-], function ($router) {
-	Route::get('/{id}', 'OfficeController@show');
-});
-
-
-// talent_assessment api routes
+// talent_assessment
 Route::group([
 	'middleware' => 'api',
 	'prefix' => 'talent-assessment',
@@ -131,9 +101,7 @@ Route::group([
 	Route::post('store', 'TalentAssessmentController@store');
 });
 
-
-
-// rnr_surveys api routes
+// rnr_surveys
 Route::group([
 	'middleware' => 'api',
 	'prefix' => 'rnr-survey',
@@ -146,11 +114,101 @@ Route::group([
 });
 
 
-// competency api routes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// staff-management
+Route::group([
+	'middleware' => 'api',
+	'prefix' => 'staff-management',
+], function ($router) {
+	// Route::get('/offices', 'SupervisorManagementController@get_offices');
+});
+
+// employees 
+Route::group([
+	'middleware' => 'api',
+	'prefix' => 'employees',
+], function ($router) {
+	Route::get('/', 'EmployeeController@index');
+	Route::get('/select_items/{department_id}', 'EmployeeController@get_select_items');
+	Route::post('store', 'EmployeeController@store');
+});
+
+// departments 
+Route::group([
+	'middleware' => 'api',
+	'prefix' => 'departments',
+], function ($router) {
+	Route::get('/','DepartmentController@index');
+	Route::get('/{id}','DepartmentController@get_info');
+	// Route::get('/office/{id}', 'DepartmentController@get_office_info');
+	Route::get('/select_items', 'DepartmentController@get_select_items');
+});
+
+// office 
+Route::group([
+	'middleware' => 'api',
+	'prefix' => 'office',
+], function ($router) {
+	Route::get('/{id}', 'OfficeController@show');
+	Route::get('/list/{department_id}', 'OfficeController@get_offices');
+	Route::post('/add-new', 'OfficeController@create');
+});
+
+// competency 
 Route::group([
 	'middleware' => 'api',
 	'prefix' => 'competency',
-	// 'namespace' => 'rnr'
 ], function ($router) {
 	Route::get('/peers', 'CompetencyController@get_peers');
 	Route::get('/questionnaire', 'CompetencyController@get_questionnaire');
@@ -160,14 +218,12 @@ Route::group([
 	Route::get('/free_employees', 'CompetencyController@get_free_employees');
 });
 
-
-// staff management
-// staff_management/offices
-// competency api routes
+// superior
 Route::group([
 	'middleware' => 'api',
-	'prefix' => 'staff-management',
-	// 'namespace' => 'rnr'
+	'prefix' => 'superior',
 ], function ($router) {
-	Route::get('/offices', 'SupervisorManagementController@get_offices');
+	Route::post('/create', 'SuperiorController@create');
+	Route::get('/list/{office_id}', 'SuperiorController@get_superiors');
+	Route::get('/{superior_id}', 'SuperiorController@get_superior');
 });

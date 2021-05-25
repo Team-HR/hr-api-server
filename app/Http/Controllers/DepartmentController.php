@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\selects\Department as DepartmentSelectResource;
 use App\Department;
+use App\Section;
+use App\Office;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
@@ -16,7 +18,14 @@ class DepartmentController extends Controller
     public function index()
     {
         $departments = Department::all();
-        return response()->json($departmevvnts);
+        return response()->json($departments);
+    }
+
+    public function get_info($department_id)
+    {
+        $department = Department::find($department_id);
+        $department["department"] = mb_convert_case($department["department"],MB_CASE_TITLE);
+        return response()->json($department);
     }
 
     public function get_select_items()
@@ -52,9 +61,10 @@ class DepartmentController extends Controller
      * @param  \App\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function show(Department $department)
+    public function get_offices($department_id)
     {
-        return response()->json($departments);
+        $sections = Office::where('department_id','=',$department_id)->get();
+        return response()->json($sections);
     }
 
     /**
