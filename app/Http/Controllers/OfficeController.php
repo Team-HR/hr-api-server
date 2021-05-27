@@ -67,7 +67,7 @@ class OfficeController extends Controller
      * @param  \App\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function get_info($id)
     {
         $office = Office::find($id);
         $office["officeTitle"] = mb_convert_case($office["office"], MB_CASE_TITLE);

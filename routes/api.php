@@ -177,22 +177,21 @@ Route::group([
 // employees 
 Route::group([
 	'middleware' => 'api',
-	'prefix' => 'employees',
+	'prefix' => 'employee',
 ], function ($router) {
 	Route::get('/', 'EmployeeController@index');
-	Route::get('/select_items/{department_id}', 'EmployeeController@get_select_items');
-	Route::post('store', 'EmployeeController@store');
+	Route::get('/get_select_items/{department_id}', 'EmployeeController@get_select_items');
+	Route::post('/store', 'EmployeeController@store');
 });
 
 // departments 
 Route::group([
 	'middleware' => 'api',
-	'prefix' => 'departments',
+	'prefix' => 'department',
 ], function ($router) {
 	Route::get('/','DepartmentController@index');
-	Route::get('/{id}','DepartmentController@get_info');
-	// Route::get('/office/{id}', 'DepartmentController@get_office_info');
-	Route::get('/select_items', 'DepartmentController@get_select_items');
+	Route::get('/get_info/{id}','DepartmentController@get_info');
+	Route::get('/get_select_items', 'DepartmentController@get_select_items');
 });
 
 // office 
@@ -200,22 +199,21 @@ Route::group([
 	'middleware' => 'api',
 	'prefix' => 'office',
 ], function ($router) {
-	Route::get('/{id}', 'OfficeController@show');
-	Route::get('/list/{department_id}', 'OfficeController@get_offices');
-	Route::post('/add-new', 'OfficeController@create');
+	Route::get('/get_info/{id}', 'OfficeController@get_info');
+	Route::get('/get_offices/{department_id}', 'OfficeController@get_offices');
+	Route::post('/create', 'OfficeController@create');
 });
 
 // competency 
 Route::group([
 	'middleware' => 'api',
-	'prefix' => 'competency',
+	'prefix' => 'competency'
 ], function ($router) {
-	Route::get('/peers', 'CompetencyController@get_peers');
-	Route::get('/questionnaire', 'CompetencyController@get_questionnaire');
+	Route::get('/get_peers', 'CompetencyController@get_peers');
+	Route::get('/get_questionnaire', 'CompetencyController@get_questionnaire');
 	Route::post('/store', 'CompetencyController@store');
-	Route::post('/addPeer', 'CompetencyController@add_peer');
-	Route::post('/deletePeer', 'CompetencyController@delete_peer');
-	Route::get('/free_employees', 'CompetencyController@get_free_employees');
+	Route::post('/add_peer', 'CompetencyController@add_peer');
+	Route::post('/delete_peer', 'CompetencyController@delete_peer');
 });
 
 // superior
@@ -224,6 +222,7 @@ Route::group([
 	'prefix' => 'superior',
 ], function ($router) {
 	Route::post('/create', 'SuperiorController@create');
-	Route::get('/list/{office_id}', 'SuperiorController@get_superiors');
-	Route::get('/{superior_id}', 'SuperiorController@get_superior');
+	Route::get('/get_free_employees','SuperiorController@get_free_employees');
+	Route::get('/get_info/{superior_id}', 'SuperiorController@get_info');
+	Route::get('/get_superiors/{office_id}', 'SuperiorController@get_superiors');
 });

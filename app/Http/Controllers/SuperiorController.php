@@ -18,15 +18,90 @@ use App\Employee;
 
 class SuperiorController extends Controller
 {
-
+  /**
+     * Get list of employees without assigned superior and questionnaire.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function get_superiors($office_id){
         $superiors = Superior::where("office_id","=",$office_id)->get();
         return response()->json($superiors);
     }
 
-    public function get_superior($superior_id){
+
+      /**
+     * Get list of employees without assigned superior and questionnaire.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function get_info(int $superior_id){
         $superior = Superior::find($superior_id);
+        $subordinates = SuperiorsRecord::where("superior_id","=",$superior_id)->get();
+
+        foreach ($subordinates as $key => $subordinate) {
+            $employee_id = $subordinate["employee_id"];
+            $full_name = Employee::find($employee_id)["full_name"];
+            $subordinates[$key] = array(
+                "employee_id" => $employee_id,
+                "full_name" => $full_name
+            );
+        }
+        $superior["subordinates"] = $subordinates;
         return response()->json($superior);
+    }
+
+    
+    /**
+     * Get list of employees without assigned superior and questionnaire.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function get_free_employees()
+    {
+        $data = array();
+        // $employees = Employee::all();
+        // foreach ($employees as $employee) {
+        //     array_push(
+        //         $data,
+        //         array(
+        //             'employee_id' => $employee->id,
+        //             'full_name' => $employee->full_name,
+        //         )
+        //     );
+        // }
+        // return response()->json($data);
+        //  get authed user id and find superior_idsuperiors
+        // $auth_employee_id = auth()->user()->employee_id;
+        $auth_employee_id = 9;
+        $superior_id = Superior::where('employee_id', $auth_employee_id)->get('id')->first()['id'];
+        //  get questionnaire_id
+        $questionnaire_id = 1;
+
+        $employees = SuperiorsRecord::where([
+            ['superior_id', '=', $superior_id],
+            ['questionnaire_id', '=', $questionnaire_id]
+        ])->get(['employee_id']);
+        $emps_in_rec = array();
+
+        foreach ($employees as $employee) {
+            array_push(
+                $emps_in_rec,
+                $employee->employee_id
+            );
+        }
+        $free_emps = array();
+        $data = Employee::whereNotIn('id', $emps_in_rec)->get();
+        foreach ($data as $dat) {
+            array_push(
+                $free_emps,
+                array(
+                    'employee_id' => $dat->id,
+                    'full_name' => $dat->full_name,
+                )
+            );
+        }
+
+        return response()->json($free_emps);
     }
 
     public function create(Request $request)
