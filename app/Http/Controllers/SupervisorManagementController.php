@@ -37,44 +37,6 @@ class SupervisorManagementController extends Controller
     }
 
     /**
-     * Display a listing of peers for competency assessment
-     * under the authenticated employee if supervisor
-     * @return \Illuminate\Http\Response
-     */
-    public function get_peers()
-    {
-        // get employee_id of the auth user
-        // $employee_id = auth()->user()->employee_id;
-        $employee_id = 9;
-
-        // get sup id
-        $superior = Superior::where('employee_id', $employee_id)
-            ->get();
-        $superior_id = $superior[0]->id;
-
-        // get peers
-        $peers = SuperiorsRecord::where('superior_id', $superior_id)->get();
-
-        $data = array();
-
-        foreach ($peers as $peer) {
-            array_push(
-                $data,
-                array(
-                    'superiors_record_id' => $peer->id,
-                    'superior_id' => $peer->superior_id,
-                    'employee_id' => $peer->employee_id,
-                    'full_name' => $peer->name,
-                    'questionnaire_id' => $peer->questionnaire_id,
-                    'is_complete' => $peer->is_complete,
-                    'competency_records' => $peer->competency_records,
-                )
-            );
-        }
-        return response()->json($data);
-    }
-
-    /**
      * Get list of employees without assigned supervisor and questionnaire.
      *
      * @return \Illuminate\Http\Response

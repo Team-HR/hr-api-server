@@ -36,8 +36,8 @@ class CompetencyController extends Controller
     public function get_peers()
     {
         // get employee_id of the auth user
-        // $employee_id = auth()->user()->employee_id;
-        $employee_id = 9;
+        $employee_id = auth()->user()->employee_id;
+        // $employee_id = 9;
 
         // get sup id
         $superior = Superior::where('employee_id', $employee_id)

@@ -225,4 +225,5 @@ Route::group([
 	Route::get('/get_free_employees','SuperiorController@get_free_employees');
 	Route::get('/get_info/{superior_id}', 'SuperiorController@get_info');
 	Route::get('/get_superiors/{office_id}', 'SuperiorController@get_superiors');
+	Route::get('/test', 'SuperiorController@test');
 });
