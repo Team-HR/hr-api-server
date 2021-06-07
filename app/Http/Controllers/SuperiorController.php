@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Office;
 use App\Superior;
 use App\SuperiorsRecord;
@@ -18,25 +19,27 @@ use App\Employee;
 
 class SuperiorController extends Controller
 {
-  /**
+    /**
      * Get list of employees without assigned superior and questionnaire.
      *
      * @return \Illuminate\Http\Response
      */
-    public function get_superiors($office_id){
-        $superiors = Superior::where("office_id","=",$office_id)->get();
+    public function get_superiors($office_id)
+    {
+        $superiors = Superior::where("office_id", "=", $office_id)->get();
         return response()->json($superiors);
     }
 
 
-      /**
+    /**
      * Get list of employees without assigned superior and questionnaire.
      *
      * @return \Illuminate\Http\Response
      */
-    public function get_info(int $superior_id){
+    public function get_info(int $superior_id)
+    {
         $superior = Superior::find($superior_id);
-        $subordinates = SuperiorsRecord::where("superior_id","=",$superior_id)->get();
+        $subordinates = SuperiorsRecord::where("superior_id", "=", $superior_id)->get();
 
         foreach ($subordinates as $key => $subordinate) {
             $employee_id = $subordinate["employee_id"];
@@ -52,7 +55,7 @@ class SuperiorController extends Controller
         return response()->json($superior);
     }
 
-    
+
     /**
      * Get list of employees without assigned superior and questionnaire.
      *
@@ -74,7 +77,7 @@ class SuperiorController extends Controller
         // return response()->json($data);
         //  get authed user id and find superior_idsuperiors
         // $auth_employee_id = auth()->user()->employee_id;
-        
+
         // get authed employee_id
         // $auth_employee_id = 9;
         // $superior_id = Superior::where('employee_id', $auth_employee_id)->get('id')->first()['id'];
@@ -98,6 +101,7 @@ class SuperiorController extends Controller
 
         $free_emps = array();
         $data = Employee::whereNotIn('id', $emps_in_rec)->get();
+
         foreach ($data as $dat) {
             array_push(
                 $free_emps,
@@ -131,14 +135,16 @@ class SuperiorController extends Controller
             // get insert_id and assign to $superior_id 
             $superior_id = $superior->id;
             // and create new subordinates with $superior_id from $request->subordinates array
-            foreach ($subordinates as $subordinate) {
-                $record = new SuperiorsRecord;
-                $record->superior_id = $superior_id;
-                $record->employee_id = $subordinate["employee_id"];
-                $record->questionnaire_id = 1;
-                $record->is_complete = 0;
-                $record->save();
-            }   
+            if ($subordinates) {
+                foreach ($subordinates as $subordinate) {
+                    $record = new SuperiorsRecord;
+                    $record->superior_id = $superior_id;
+                    $record->employee_id = $subordinate["employee_id"];
+                    $record->questionnaire_id = 1;
+                    $record->is_complete = 0;
+                    $record->save();
+                }
+            }
         }
         // else if $superior_id == true delete all subordinates with $superior_id == $request->superior_id and create new list of subordinates from $request->subordinates array
         else {
@@ -149,13 +155,13 @@ class SuperiorController extends Controller
                 ['is_complete', '=', $is_complete],
                 ['questionnaire_id', '=', $questionnaire_id]
             ])->get();
-            
+
             #removes subordinate not in vue arr start
             foreach ($db_subordinates as $arr) {
                 $employee_id = $arr["employee_id"];
-                $in_array = in_array($employee_id, array_map(function($item){
+                $in_array = in_array($employee_id, array_map(function ($item) {
                     return $item["employee_id"];
-                },$subordinates));
+                }, $subordinates));
                 if (!$in_array) {
                     #execute delete from superior records table with is_complete = 0
                     $superiors_record_id = SuperiorsRecord::where([
@@ -169,36 +175,37 @@ class SuperiorController extends Controller
                         ["superiors_record_id", "=", $superiors_record_id],
                         ["questionnaire_id", "=", 1]
                     ])->delete();
-                    $deleted [] = $employee_id;
-                } 
+                    $deleted[] = $employee_id;
+                }
             }
             #removes subordinate not in vue arr end
-            
+
             #add subordinate not in db arr start
             $db_subordinates = SuperiorsRecord::where([
                 ['superior_id', '=', $superior_id],
                 // ['is_complete', '=', $is_complete],
                 ['questionnaire_id', '=', $questionnaire_id]
             ])->get();
-            foreach ($subordinates as $arr) {
-                $employee_id = $arr["employee_id"];
-                $in_array = in_array($employee_id, array_map(function($item){
-                    return $item["employee_id"];
-                },$db_subordinates->toArray()));
-                if (!$in_array) {
-                    #execute add to superior records table with is_complete = 0
-                    $sub = new SuperiorsRecord;
-                    $sub->superior_id = $superior_id;
-                    $sub->employee_id = $employee_id;
-                    $sub->questionnaire_id = 1;
-                    $sub->is_complete = 0;
-                    $sub->save();
-                    $inserted [] = $employee_id;
-                } 
+            if ($subordinates) {
+                foreach ($subordinates as $arr) {
+                    $employee_id = $arr["employee_id"];
+                    $in_array = in_array($employee_id, array_map(function ($item) {
+                        return $item["employee_id"];
+                    }, $db_subordinates->toArray()));
+                    if (!$in_array) {
+                        #execute add to superior records table with is_complete = 0
+                        $sub = new SuperiorsRecord;
+                        $sub->superior_id = $superior_id;
+                        $sub->employee_id = $employee_id;
+                        $sub->questionnaire_id = 1;
+                        $sub->is_complete = 0;
+                        $sub->save();
+                        $inserted [] = $employee_id;
+                    }
+                }
+                #add subordinate not in db arr end
             }
-            #add subordinate not in db arr end
-            
-        }   
+        }
 
         return response()->json([
             "subordinates" => $subordinates,
@@ -207,37 +214,26 @@ class SuperiorController extends Controller
         ]);
     }
 
-    public function test (){
-        $db_arr = [
-            ["employee_id" => 1],
-            ["employee_id" => 2],
-            ["employee_id" => 3],
-            ["employee_id" => 4],
-            ["employee_id" => 5],
-        ];
-        $vue_arr = [
-            ["employee_id" => 9, "name" => "a"],
-            ["employee_id" => 2, "name" => "b"],
-            // ["employee_id" => 3],
-            ["employee_id" => 4],
-            // ["employee_id" => 5],
-        ];
-        
-        $dels = [];
 
-            foreach ($vue_arr as $arr) {
-                $employee_id = $arr["employee_id"];
-                $in_array = in_array($employee_id, array_map(function($item){
-                    return $item["employee_id"];
-                },$db_arr));
-                if (!$in_array) {
-                    #execute delete from superior records table with is_complete = 0
-                    #execute delete from questionnaire records table related incomplete data
-                } 
-            }
-            
-
-        return response()->json($dels);
+    /**
+     * Check if authed user is supervisor return superior_id,
+     * office_id and department_id if true else false.
+     * @return \Illuminate\Http\Response
+     */
+    public function authCheck()
+    {
+        $employee_id = auth()->user()->employee_id;
+        #check if user is superior
+        $superior = Superior::where([
+            ["employee_id", "=", $employee_id],
+            ["active", "=", 1],
+        ])->first();
+        #if not superior return NULL
+        if (!$superior) return NULL;
+        #get department_id with office_id
+        $department = Office::find($superior->office_id);
+        $superior["department_id"] = $department->department_id;
+        return response()->json($superior);
     }
 
     /**

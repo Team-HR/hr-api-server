@@ -24,7 +24,7 @@ class DepartmentController extends Controller
     public function get_info($department_id)
     {
         $department = Department::find($department_id);
-        $department["department"] = mb_convert_case($department["department"],MB_CASE_TITLE);
+        $department["department"] = mb_convert_case($department["department"],MB_CASE_UPPER);
         return response()->json($department);
     }
 
