@@ -8,8 +8,28 @@ use App\Section;
 use App\Office;
 use Illuminate\Http\Request;
 
-class DepartmentController extends Controller
+class AvatarController extends Controller
 {
+    /**
+     * Get all avatar files
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function get_files()
+    {
+        return response()->json("Get Avatars");
+    }
+
+    /**
+     * Save file input.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function upload_file(Request $request)
+    {
+        return response()->json($request->all());
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +44,7 @@ class DepartmentController extends Controller
     public function get_info($department_id)
     {
         $department = Department::find($department_id);
-        $department["department"] = mb_convert_case($department["department"],MB_CASE_UPPER);
+        $department["department"] = mb_convert_case($department["department"], MB_CASE_UPPER);
         return response()->json($department);
     }
 
@@ -63,7 +83,7 @@ class DepartmentController extends Controller
      */
     public function get_offices($department_id)
     {
-        $sections = Office::where('department_id','=',$department_id)->get();
+        $sections = Office::where('department_id', '=', $department_id)->get();
         return response()->json($sections);
     }
 
@@ -85,7 +105,7 @@ class DepartmentController extends Controller
      * @param  \App\Department  $department
      * @return \Illuminate\Http\Response
      */
-    
+
     public function update(Request $request, Department $department)
     {
         //

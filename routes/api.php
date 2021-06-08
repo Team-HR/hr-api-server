@@ -227,3 +227,13 @@ Route::group([
 	Route::get('/get_superiors/{office_id}', 'SuperiorController@get_superiors');
 	Route::get('/authCheck', 'SuperiorController@authCheck');
 });
+
+
+// avatar
+Route::group([
+	'middleware' => 'api',
+	'prefix' => 'avatar',
+], function ($router) {
+	Route::post('/upload_file', 'AvatarController@upload_file');
+	Route::get('/get_files', 'AvatarController@get_files');
+});
