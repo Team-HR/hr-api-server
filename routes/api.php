@@ -25,12 +25,14 @@ Route::group([
 ], function ($router) {
 	Route::post('store', 'JWTAuthController@store');
 	Route::post('update', 'JWTAuthController@update');
+	Route::post('change-password', 'JWTAuthController@change_password');
 	Route::post('login', 'JWTAuthController@login');
 	Route::post('logout', 'JWTAuthController@logout');
 	Route::get('refresh', 'JWTAuthController@refresh');
 	Route::get('user', 'JWTAuthController@profile');
 	Route::get('users', 'JWTAuthController@users');
 	Route::get('get_user/{id}', 'JWTAuthController@get_user');
+
 });
 
 Route::group([

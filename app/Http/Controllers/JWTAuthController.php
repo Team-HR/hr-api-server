@@ -127,6 +127,11 @@ class JWTAuthController extends Controller
         return response()->json(['message' => 'Successfully logged out'], 200);
     }
 
+    public function change_password(Request $request)
+    {
+        return response()->json("change pass!: "+ $request);
+    }
+
     /**
      * Refresh a token.
      *
