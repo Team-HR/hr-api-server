@@ -14,6 +14,11 @@ Development initiated on July 16, 2018.
 ## Dependencies for Installation
 1. Composer <a href="https://getcomposer.org/">https://getcomposer.org/</a>
 
+## How to Enable CORS in Apache Web Server
+<p>By default, cross domain requests are disabled in Apache web server. You need to set the Access-Control-Allow-Origin header to enable CORS (Cross Origin Resource Sharing) in Apache. Here are the steps to enable CORS in Apache web server.</p>
+1. Enable headers module
+<code>$ sudo a2emod headers</code>
+
 ## Installation
 1. Clone this repository.
 2. Run <code>cd</code> to the project directory
@@ -22,10 +27,10 @@ Development initiated on July 16, 2018.
 5. Configure <code>.env</code> database parameters.
 6. Run <code>php artisan key:generate</code>
 7. Run <code>php artisan jwt:secret</code>
-8. Run <code>php artisan migrate</code>
-9. Run <code>php artisan db:seed --class=UserSeeder</code>
-10. Open new terminal and run <code>php artisan serve</code>
-11. Open new terminal and run <code>php artisan websocket:serve</code>
+8. sudo chmod -R 775 hr-api-server
+9. sudo chown -R $USER:www-data hr-api-server
+11. Open new terminal and run <code>php artisan serve</code>
+12. Open new terminal and run <code>php artisan websocket:serve</code>
 Start the creating wonders!
 
 ## Usefull
