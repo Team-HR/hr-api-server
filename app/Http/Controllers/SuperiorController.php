@@ -46,6 +46,7 @@ class SuperiorController extends Controller
             $full_name = Employee::find($employee_id)["full_name"];
             $is_complete = $subordinate["is_complete"];
             $subordinates[$key] = array(
+                "index" => $key,
                 "employee_id" => $employee_id,
                 "full_name" => $full_name,
                 "is_complete" => $is_complete
