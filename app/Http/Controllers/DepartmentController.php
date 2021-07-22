@@ -20,7 +20,7 @@ class DepartmentController extends Controller
     public function index()
     {
         $departments = Department::all();
-        return response()->json("departments");
+        return response()->json($departments);
     }
 
     public function get_info($department_id)
@@ -102,13 +102,7 @@ class DepartmentController extends Controller
     {
         //
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Department  $department
-     * @return \Illuminate\Http\Response
-     */
+    
     public function test()
     {
         // get all departments

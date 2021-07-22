@@ -194,7 +194,7 @@ Route::group([
 	Route::get('/','DepartmentController@index');
 	Route::get('/get_info/{id}','DepartmentController@get_info');
 	Route::get('/get_select_items', 'DepartmentController@get_select_items');
-	Route::get('/test', 'DepartmentController@test');
+	// Route::get('/test', 'DepartmentController@test');
 });
 
 // office 
@@ -232,10 +232,10 @@ Route::group([
 });
 
 // TESTING ============================================= START
-// Route::group([
-// 	'middleware' => 'api',
-// 	'prefix' => 'test',
-// ], function ($router) {
-// 	// Route::get('/', 'TestController@getDepartmentTree');
-// });
+Route::group([
+	'middleware' => 'api',
+	'prefix' => 'test',
+], function ($router) {
+	Route::get('/', 'TestController@getDepartmentTree');
+});
 // TESTING ============================================= END
