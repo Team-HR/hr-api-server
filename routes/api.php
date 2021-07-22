@@ -194,7 +194,7 @@ Route::group([
 	Route::get('/','DepartmentController@index');
 	Route::get('/get_info/{id}','DepartmentController@get_info');
 	Route::get('/get_select_items', 'DepartmentController@get_select_items');
-	Route::get('/get_department_tree', 'DepartmentController@getDepartmentTree');
+	Route::get('/test', 'DepartmentController@getDepartmentsInfo');
 });
 
 // office 
