@@ -229,3 +229,12 @@ Route::group([
 	Route::get('/get_superiors/{office_id}', 'SuperiorController@get_superiors');
 	Route::get('/authCheck', 'SuperiorController@authCheck');
 });
+
+// TESTING ============================================= START
+Route::group([
+	'middleware' => 'api',
+	'prefix' => 'test',
+], function ($router) {
+	Route::get('/', 'TestController@index');
+});
+// TESTING ============================================= END
