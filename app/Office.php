@@ -10,7 +10,7 @@ class Office extends Model
     protected $fillable = [
         'department_id',
         'section_id',
-        'office'
+        'office',
     ];
 
     protected $appends = ['section','department'];
