@@ -18,19 +18,19 @@ class DepartmentController extends Controller
             // get all offices
                 // get all supervisors
                     // get all subordinates
-        $departments = Department::all();
-        $data = [];
-        foreach ($departments as $department) {
-            $data [] = array(
-                "id" => $department->id,
-                "department" => $department->department,
-                "countOffices" => $department->countOffices,
-                "offices" => $this->getOffices($department->id)
-            );
-        }
+        // $departments = Department::all();
+        // $data = [];
+        // foreach ($departments as $department) {
+        //     $data [] = array(
+        //         "id" => $department->id,
+        //         "department" => $department->department,
+        //         "countOffices" => $department->countOffices,
+        //         "offices" => $this->getOffices($department->id)
+        //     );
+        // }
         // return $departments;
         // return $data[0];
-        return response()->json($data);
+        return response()->json("test");
     }
     public function getOffices($department_id)
     {
