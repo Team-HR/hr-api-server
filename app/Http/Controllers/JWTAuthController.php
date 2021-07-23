@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Validator;
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\Hash;
 
 class JWTAuthController extends Controller
 {
@@ -18,7 +19,7 @@ class JWTAuthController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except(['login']);
-        $this->middleware('log')->only(['login', 'store', 'update']);
+        // $this->middleware('log')->only(['login', 'store', 'update']);
     }
 
     /**
@@ -129,7 +130,51 @@ class JWTAuthController extends Controller
 
     public function change_password(Request $request)
     {
-        return response()->json("change pass!: "+ $request);
+        //password hash check
+        $status = array(
+            "success" => false,
+            "confirmed" => false,
+            "validated" => false,
+            "message" => ""
+        );
+        
+        // confirm current password
+        $match = Hash::check($request->currentPassword,Auth::user()->getAuthPassword());
+        if (!$match) 
+        {
+            $status = array(
+                "success" => false,
+                "confirmed" => false,
+                "validated" => false,
+                "message" => "Invalid Password!"
+            );
+            return response()->json($status);
+        }
+
+        // validate new password
+        if (empty($request->newPassword)) {
+            $status = array(
+                "success" => false,
+                "confirmed" => true,
+                "validated" => false,
+                "message" => "Please enter a password!"
+            );
+            return response()->json($status);
+        }
+
+
+        $request->user()->fill([
+            'password' => Hash::make($request->newPassword)
+        ])->save();
+
+        $status = array(
+            "success" => true,
+            "confirmed" => true,
+            "validated" => true,
+            "message" => "Change successful!"
+        );
+
+        return response()->json($status);
     }
 
     /**
