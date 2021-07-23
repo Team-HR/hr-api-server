@@ -90,7 +90,20 @@ class JWTAuthController extends Controller
         if ($token = $this->guard()->attempt($credentials)) {
             return response()->json(['status' => 'success'], 200)->header('Authorization', $token);
         }
-        return response()->json(["status" => "Invalid credentials", 'errors' => ['username' => 'Invalid Credentials', 'password' => 'Invalid Credentials']], 401);
+        // return response()->json(["status" => "Invalid credentials", 'errors' => ['username' => 'Invalid Credentials', 'password' => 'Invalid Credentials']], 401);
+        
+        $user = User::where('username', '=', $credentials["username"])->first();
+        if (!$user) {
+            return response()->json([
+                "error_username" => "Username not found or wrong!",
+                "error_password" => "",
+            ], 401);
+        }
+
+        return response()->json([
+            "error_username" => "",
+            "error_password" => "Incorrect password!",
+        ], 401);
         // return response()->json(["status" => "Invalid credentials", 'errors' => $request->all()], 401);
     }
 
