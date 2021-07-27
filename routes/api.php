@@ -194,7 +194,6 @@ Route::group([
 	Route::get('/','DepartmentController@index');
 	Route::get('/get_info/{id}','DepartmentController@get_info');
 	Route::get('/get_select_items', 'DepartmentController@get_select_items');
-	Route::get('/get_department_tree', 'DepartmentController@getDepartmentTree');
 });
 
 // office 
@@ -217,6 +216,7 @@ Route::group([
 	Route::post('/store', 'CompetencyController@store');
 	Route::post('/add_peer', 'CompetencyController@add_peer');
 	Route::post('/delete_peer', 'CompetencyController@delete_peer');
+	Route::get('/get_department_tree', 'CompetencyController@getDepartmentTree');
 });
 
 // superior
