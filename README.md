@@ -17,7 +17,7 @@ Development initiated on July 16, 2018.
 ## How to Enable CORS in Apache Web Server
 <p>By default, cross domain requests are disabled in Apache web server. You need to set the Access-Control-Allow-Origin header to enable CORS (Cross Origin Resource Sharing) in Apache. Here are the steps to enable CORS in Apache web server.</p>
 1. Enable headers module
-<code>$ sudo a2emod headers</code>
+<code>$ sudo a2enmod headers</code>
 
 ## Installation
 1. Clone this repository.
