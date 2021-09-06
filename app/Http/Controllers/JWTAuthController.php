@@ -8,6 +8,7 @@ use Validator;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class JWTAuthController extends Controller
 {
@@ -31,20 +32,21 @@ class JWTAuthController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'name' => 'required|min:8|max:255',
-            'username' => 'required|min:3|max:20|unique:users',
+            'employee_id' => 'required|unique:users',
+            'name' => 'required|max:255',
+            'username' => 'required|unique:users',
             'roles' => 'required',
             'password' => 'required|min:4'
         ];
 
         $request->validate($rules);
         $user = new User;
+        $user->employee_id = $request->input('employee_id');
         $user->name = $request->input('name');
         $user->username = $request->input('username');
-        $user->roles = $request->input('roles');
+        $user->roles = ["emp","sup"];//$request->input('roles');
         $user->password = bcrypt($request->input('password'));
         $user->save();
-
         return response()->json(["status" => "success", "data" => $user]);
     }
 
@@ -75,6 +77,14 @@ class JWTAuthController extends Controller
         $password_reset ? $user->password = bcrypt($request->password) : null;
         $user->save();
         return response()->json(["status" => "success", "data" => $user]);
+    }
+
+    public function reset_password(Request $request)
+    {
+        $user = User::find($request->id);
+        $user->password = bcrypt('1234');
+        $user->save();
+        return response()->json($request->id, 200);
     }
 
 
@@ -128,6 +138,21 @@ class JWTAuthController extends Controller
     {
         $users = User::all();
         return response()->json(["status" => "success", "data" => $users], 200);
+    }
+
+    public function get_users()
+    {
+        $users = User::orderBy("id","desc")->get();
+        $data = [];
+        foreach ($users as $user) {
+            $data [] = [
+                'id' => $user->id,
+                'employee_id' => $user->employee_id,
+                'username' => $user->username,
+                'name' => $user->name,
+            ];
+        }
+        return response()->json($data, 200);
     }
     /**
      * Log the user out (Invalidate the token).

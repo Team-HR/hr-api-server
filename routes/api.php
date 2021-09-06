@@ -26,11 +26,13 @@ Route::group([
 	Route::post('store', 'JWTAuthController@store');
 	Route::post('update', 'JWTAuthController@update');
 	Route::post('change-password', 'JWTAuthController@change_password');
+	Route::post('reset_password', 'JWTAuthController@reset_password');
 	Route::post('login', 'JWTAuthController@login');
 	Route::post('logout', 'JWTAuthController@logout');
 	Route::get('refresh', 'JWTAuthController@refresh');
 	Route::get('user', 'JWTAuthController@profile');
 	Route::get('users', 'JWTAuthController@users');
+	Route::get('get_users', 'JWTAuthController@get_users');
 	Route::get('get_user/{id}', 'JWTAuthController@get_user');
 
 });
@@ -182,6 +184,7 @@ Route::group([
 	'prefix' => 'employee',
 ], function ($router) {
 	Route::get('/', 'EmployeeController@index');
+	Route::get('/get_employees', 'EmployeeController@get_employees');
 	Route::get('/get_select_items/{department_id}', 'EmployeeController@get_select_items');
 	Route::post('/store', 'EmployeeController@store');
 });

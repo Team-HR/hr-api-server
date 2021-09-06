@@ -18,6 +18,19 @@ class EmployeeController extends Controller
         $employees = Employee::all();
         return response()->json($employees);
     }
+    
+    public function get_employees()
+    {
+        $employees = Employee::all();
+        $data = [];
+        foreach ($employees as $emp) {
+            $data [] = [
+                "id" => $emp->id,
+                "name" => $emp->full_name,
+            ];
+        }
+        return response()->json($data);
+    }
 
     public function get_select_items($department_id)
     {
